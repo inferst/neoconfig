@@ -1,0 +1,7 @@
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+require("config.lazy")
+require("config.usercmds")
+require("config.godot")
+require("config.common")
