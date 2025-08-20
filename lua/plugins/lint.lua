@@ -9,12 +9,12 @@ return {
         codespell = { 'codespell' },
       }
 
-      local filename = vim.fn.stdpath 'config' .. '/' .. '.spellignore'
+      local spellignore = vim.fn.stdpath 'config' .. '/' .. '.spellignore'
 
       local codespell = lint.linters.codespell
       codespell.args = {
         '--stdin-single-line',
-        '--ignore-words=' .. filename,
+        '--ignore-words=' .. spellignore,
         '-',
       }
 

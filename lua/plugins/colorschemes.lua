@@ -29,10 +29,14 @@ return {
     'catppuccin/nvim',
     priority = 1000,
     config = function()
+      ---@diagnostic disable-next-line: missing-fields
       require('catppuccin').setup {
         term_colors = true,
         no_italic = true,
       }
+    end,
+    init = function()
+      vim.cmd.colorscheme 'catppuccin-mocha'
     end,
   },
   {
@@ -65,8 +69,8 @@ return {
     name = 'moonfly',
     priority = 1000,
     lazy = false,
-    init = function()
-      vim.cmd.colorscheme 'moonfly'
-    end,
+    -- init = function()
+    --   vim.cmd.colorscheme 'moonfly'
+    -- end,
   },
 }

@@ -41,6 +41,8 @@ return { -- Autoformat
       javascriptreact = { 'prettierd', 'prettier' },
       css = { 'prettierd', 'prettierd' },
       toml = { 'taplo' },
+      -- json = { 'jq' },
+      -- html = { 'html_beautify' },
     },
   },
 }

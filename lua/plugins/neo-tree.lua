@@ -25,5 +25,8 @@ return {
         },
       },
     },
+    source_selector = {
+      winbar = true,
+    },
   },
 }

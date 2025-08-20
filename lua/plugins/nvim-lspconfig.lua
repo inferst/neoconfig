@@ -5,8 +5,8 @@ return {
     -- Automatically install LSPs and related tools to stdpath for Neovim
     -- Mason must be loaded before its dependents so we need to set it up here.
     -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-    { 'williamboman/mason.nvim', opts = {} },
-    'williamboman/mason-lspconfig.nvim',
+    { 'mason-org/mason.nvim', opts = {} },
+    'mason-org/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
 
     -- Useful status updates for LSP.
@@ -419,7 +419,6 @@ return {
       --   },
       -- },
 
-
       -- ts_ls = {
       --   commands = {
       --     RenameFile = {
@@ -498,10 +497,16 @@ return {
       },
     }
 
-    ---@type MasonLspconfigSettings
-    ---@diagnostic disable-next-line: missing-fields
+    -- ---@type MasonLspconfigSettings
+    -- ---@diagnostic disable-next-line: missing-fields
     require('mason-lspconfig').setup {
-      automatic_enable = vim.tbl_keys(servers or {}),
+      -- automatic_enable = vim.tbl_keys(servers or {}),
+      automatic_enable = {
+        exclude = {
+          'rust_analyzer',
+          'codespell',
+        },
+      },
     }
 
     -- Ensure the servers and tools above are installed
@@ -524,13 +529,11 @@ return {
       'prettierd',
       'prettier',
       'html-lsp',
-      'json-lsp',
-      'css-lsp',
       'eslint-lsp',
       'stylelint-lsp',
       'tailwindcss-language-server',
-      'codespell',
     })
+
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     for server_name, config in pairs(servers) do
