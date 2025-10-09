@@ -79,3 +79,40 @@ vim.keymap.set('n', '<leader>cD', function()
     apply = true,
   }
 end, { desc = 'Fix all diagnostics' })
+
+vim.keymap.set('n', '<leader>js', ':e ~/scratchpad.js<CR>', {
+  noremap = true,
+  silent = true,
+  desc = "Open JavaScript scratchpad"
+})
+
+vim.keymap.set('n', '<leader>jr', ':w | !node %<CR>', {
+  noremap = true,
+  silent = true,
+  desc = "Run JavaScript scratchpad"
+})
+
+-- Copy file path
+vim.keymap.set('n', '<leader>yP', function()
+  local path = vim.fn.expand('%:p')
+  vim.fn.setreg('+', path)
+  vim.notify("Copied full path: " .. path)
+end, { desc = "Yank absolute file path" })
+
+vim.keymap.set('n', '<leader>yp', function()
+  local path = vim.fn.expand('%')
+  vim.fn.setreg('+', path)
+  vim.notify("Copied relative path: " .. path)
+end, { desc = "Yank relative file path" })
+
+vim.keymap.set('n', '<leader>yf', function()
+  local file_name = vim.fn.expand('%:t')
+  vim.fn.setreg('+', file_name)
+  vim.notify("Copied filename: " .. file_name)
+end, { desc = "Yank filename" })
+
+vim.keymap.set('n', '<leader>yd', function()
+  local dir_path = vim.fn.expand('%:p:h')
+  vim.fn.setreg('+', dir_path)
+  vim.notify("Copied directory path: " .. dir_path)
+end, { desc = "Yank directory path" })

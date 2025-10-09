@@ -95,5 +95,10 @@ vim.opt.tabstop = 2
 vim.opt.titlestring = [[[%{luaeval('current_tab()')}] %t]]
 vim.opt.title = true
 
--- vim.o.foldmethod = 'indent'
--- vim.o.foldlevel = 99
+-- Treesitter folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldcolumn = "0"
+vim.opt.foldtext = ""
+vim.opt.foldlevel = 99
+vim.opt.foldnestmax = 4

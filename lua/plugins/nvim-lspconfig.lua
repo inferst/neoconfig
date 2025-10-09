@@ -59,10 +59,10 @@ return {
     -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
     -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
-    --  This function gets run when an LSP attaches to a particular buffer.
-    --    That is to say, every time a new file is opened that is associated with
-    --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-    --    function will be executed to configure the current buffer
+    -- This function gets run when an LSP attaches to a particular buffer.
+    -- That is to say, every time a new file is opened that is associated with
+    -- an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
+    -- function will be executed to configure the current buffer
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
@@ -77,73 +77,41 @@ return {
         end
 
         -- Jump to the definition of the word under your cursor.
-        --  This is where a variable was first declared, or where a function is defined, etc.
-        --  To jump back, press <C-t>.
-        map('gd', Snacks.picker.lsp_definitions, '[G]oto [D]efinition')
+        -- This is where a variable was first declared, or where a function is defined, etc.
+        -- To jump back, press <C-t>.
+        map('grd', Snacks.picker.lsp_definitions, '[G]oto [D]efinition')
 
         -- Find references for the word under your cursor.
-        map('gr', Snacks.picker.lsp_references, '[G]oto [R]eferences')
+        map('grr', Snacks.picker.lsp_references, '[G]oto [R]eferences')
 
         -- Jump to the implementation of the word under your cursor.
-        --  Useful when your language has ways of declaring types without an actual implementation.
-        map('gI', Snacks.picker.lsp_implementations, '[G]oto [I]mplementation')
-        -- -- Rename the variable under your cursor.
-        -- --  Most Language Servers support renaming across files, etc.
-        -- map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-        --
-        -- -- Execute a code action, usually your cursor needs to be on top of an error
-        -- -- or a suggestion from your LSP for this to activate.
-        -- map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-        --
-        -- -- Find references for the word under your cursor.
-        -- map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-        --
-        -- -- Jump to the implementation of the word under your cursor.
-        -- --  Useful when your language has ways of declaring types without an actual implementation.
-        -- map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-        --
-        -- -- Jump to the definition of the word under your cursor.
-        -- --  This is where a variable was first declared, or where a function is defined, etc.
-        -- --  To jump back, press <C-t>.
-        -- map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-        --
-        -- -- WARN: This is not Goto Definition, this is Goto Declaration.
-        -- --  For example, in C this would take you to the header.
-        -- map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-        --
-        -- -- Fuzzy find all the symbols in your current document.
-        -- --  Symbols are things like variables, functions, types, etc.
-        -- map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-        --
-        -- -- Fuzzy find all the symbols in your current workspace.
-        -- --  Similar to document symbols, except searches over your entire project.
-        -- map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+        -- Useful when your language has ways of declaring types without an actual implementation.
+        map('gri', Snacks.picker.lsp_implementations, '[G]oto [I]mplementation')
 
         -- Jump to the type of the word under your cursor.
-        --  Useful when you're not sure what type a variable is and you want to see
-        --  the definition of its *type*, not where it was *defined*.
-        map('<leader>D', Snacks.picker.lsp_type_definitions, 'Type [D]efinition')
+        -- Useful when you're not sure what type a variable is and you want to see
+        -- the definition of its *type*, not where it was *defined*.
+        map('grt', Snacks.picker.lsp_type_definitions, 'Type [D]efinition')
 
         -- Fuzzy find all the symbols in your current document.
-        --  Symbols are things like variables, functions, types, etc.
-        map('<leader>ds', Snacks.picker.lsp_symbols, '[D]ocument [S]ymbols')
+        -- Symbols are things like variables, functions, types, etc.
+        map('gO', Snacks.picker.lsp_symbols, '[D]ocument [S]ymbols')
 
         -- Fuzzy find all the symbols in your current workspace.
-        --  Similar to document symbols, except searches over your entire project.
-        map('<leader>ws', Snacks.picker.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
+        -- Similar to document symbols, except searches over your entire project.
+        map('gW', Snacks.picker.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
 
         -- Rename the variable under your cursor.
-        --  Most Language Servers support renaming across files, etc.
-        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        -- Most Language Servers support renaming across files, etc.
+        map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
-        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+        map('gra', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
         -- WARN: This is not Goto Definition, this is Goto Declaration.
-        --  For example, in C this would take you to the header.
-        map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-        -- map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+        -- For example, in C this would take you to the header.
+        map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
         ---@param client vim.lsp.Client
@@ -156,7 +124,7 @@ return {
 
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
-        --    See `:help CursorHold` for information about when this is executed
+        -- See `:help CursorHold` for information about when this is executed
         --
         -- When you move your cursor, the highlights will be cleared (the second autocommand).
         local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -318,78 +286,6 @@ return {
             },
           },
         },
-        keys = {
-          -- {
-          --   'gD',
-          --   function()
-          --     local params = vim.lsp.util.make_position_params()
-          --     vim.lsp.execute {
-          --       command = '_typescript.goToSourceDefinition',
-          --       arguments = { params.textDocument.uri, params.position },
-          --       open = true,
-          --     }
-          --   end,
-          --   desc = 'Goto Source Definition',
-          -- },
-          -- {
-          --   'gR',
-          --   function()
-          --     vim.lsp.execute {
-          --       command = '_typescript.findAllFileReferences',
-          --       arguments = { vim.uri_from_bufnr(0) },
-          --       open = true,
-          --     }
-          --   end,
-          --   desc = 'File References',
-          -- },
-          -- {
-          --   '<leader>co',
-          --   function()
-          --     vim.lsp.buf.code_action {
-          --       context = { only = { 'source.organizeImports' } },
-          --       apply = true,
-          --     }
-          --   end,
-          --   desc = 'Organize Imports',
-          -- },
-          -- {
-          --   '<leader>cM',
-          --   function()
-          --     vim.lsp.buf.code_action {
-          --       context = { only = { 'source.addMissingImports.ts' } },
-          --       apply = true,
-          --     }
-          --   end,
-          --   desc = 'Add missing imports',
-          -- },
-          -- {
-          --   '<leader>cu',
-          --   function()
-          --     vim.lsp.buf.code_action {
-          --       context = { only = { 'source.removeUnused.ts' } },
-          --       apply = true,
-          --     }
-          --   end,
-          --   desc = 'Remove unused imports',
-          -- },
-          -- {
-          --   '<leader>cD',
-          --   function()
-          --     vim.lsp.buf.code_action {
-          --       context = { only = { 'source.fixAll.ts' } },
-          --       apply = true,
-          --     }
-          --   end,
-          --   desc = 'Fix all diagnostics',
-          -- },
-          -- {
-          --   '<leader>cV',
-          --   function()
-          --     vim.lsp.execute { command = 'typescript.selectTypeScriptVersion' }
-          --   end,
-          --   desc = 'Select TS workspace version',
-          -- },
-        },
       },
 
       -- rust_analyzer = {
@@ -532,6 +428,7 @@ return {
       'eslint-lsp',
       'stylelint-lsp',
       'tailwindcss-language-server',
+      -- 'gdtoolkit',
     })
 
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -540,6 +437,8 @@ return {
       vim.lsp.config(server_name, config)
     end
 
-    require('lspconfig').gdscript.setup(capabilities)
+    vim.lsp.config('gdscript', {
+      capabilities = capabilities,
+    })
   end,
 }

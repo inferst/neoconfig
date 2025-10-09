@@ -11,6 +11,15 @@ vim.api.nvim_create_user_command('Format', function(args)
   require('conform').format { async = true, lsp_format = 'fallback', range = range }
 end, { range = true })
 
+local function find_window(buf)
+  for _, win_id in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_buf(win_id) == buf then
+      return win_id
+    end
+  end
+  return nil
+end
+
 -- Open terminal in the same buffer
 local terminal_buf = nil
 
@@ -22,4 +31,23 @@ vim.api.nvim_create_user_command('Term', function()
     vim.cmd 'term'
     terminal_buf = vim.fn.bufnr '%'
   end
+end, {})
+
+local gemini_buf = nil
+
+vim.api.nvim_create_user_command('Gemini', function()
+  if gemini_buf and vim.api.nvim_buf_is_valid(gemini_buf) then
+    local win = find_window(gemini_buf)
+
+    if win ~= nil then
+      vim.api.nvim_set_current_win(win)
+    else
+      vim.api.nvim_win_set_buf(0, gemini_buf)
+    end
+  else
+    vim.cmd 'terminal gemini'
+    gemini_buf = vim.api.nvim_get_current_buf()
+  end
+
+  vim.cmd 'startinsert'
 end, {})
