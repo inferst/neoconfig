@@ -39,6 +39,7 @@ return { -- Autoformat
       typescriptreact = { 'prettierd', 'prettier' },
       javascript = { 'prettierd', 'prettier' },
       javascriptreact = { 'prettierd', 'prettier' },
+      vue = { 'prettierd', 'prettier' },
       css = { 'prettierd', 'prettierd' },
       toml = { 'taplo' },
       -- json = { 'jq' },

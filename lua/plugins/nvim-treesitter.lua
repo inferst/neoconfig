@@ -7,7 +7,21 @@ return { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter-textobjects',
   },
   opts = {
-    ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'json5' },
+    ensure_installed = {
+      'bash',
+      'c',
+      'diff',
+      'html',
+      'lua',
+      'luadoc',
+      'markdown',
+      'markdown_inline',
+      'query',
+      'vim',
+      'vimdoc',
+      'json5',
+    },
+
     -- Autoinstall languages that are not installed
     auto_install = true,
     highlight = {
@@ -68,6 +82,15 @@ return { -- Highlight, edit, and navigate code
       },
     },
     folding = true,
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        -- init_selection = 'gnn',
+        node_incremental = 'v',
+        -- scope_incremental = 'grc',
+        node_decremental = 'V',
+      },
+    },
   },
   -- There are additional nvim-treesitter modules that you can use to interact
   -- with nvim-treesitter. You should go explore a few and see what interests you:

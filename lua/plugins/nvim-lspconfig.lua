@@ -270,7 +270,11 @@ return {
                 {
                   name = '@vue/typescript-plugin',
                   location = vim.fn.expand '$MASON/packages/vue-language-server/node_modules/@vue/language-server',
-                  languages = { 'typescript', 'javascript', 'vue' },
+                  languages = {
+                    -- 'typescript',
+                    -- 'javascript',
+                    'vue',
+                  },
                   enableForWorkspaceTypeScriptVersions = true,
                   configNamespace = 'typescript',
                 },

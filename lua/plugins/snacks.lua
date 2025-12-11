@@ -15,6 +15,25 @@ return {
       },
     },
     picker = {
+      main = {
+        file = false,
+      },
+      -- sources = {
+      --   qflist = {
+      --     on_change = function(picker, item)
+      --       vim.schedule(function()
+      --         picker.preview.win:set_title(item.file)
+      --       end)
+      --     end,
+      --   },
+      --   files = {
+      --     on_change = function(picker, item)
+      --       vim.schedule(function()
+      --         picker.preview.win:set_title(item.file)
+      --       end)
+      --     end,
+      --   },
+      -- },
       --   formatters = {
       --     file = {
       --       truncate = 70,
@@ -90,7 +109,7 @@ return {
       function()
         Snacks.picker.grep()
       end,
-      desc = '[S]earch by [G]rep',
+      desc = '[S]earch by [G]rep (Literal)',
     },
     {
       '<leader>sw',

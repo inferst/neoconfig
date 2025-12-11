@@ -17,12 +17,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!"<CR>')
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -56,6 +50,40 @@ vim.keymap.set('n', '<leader>co', function()
   }
 end, { desc = 'Organize Imports' })
 
+-- Typescript
+vim.keymap.set('n', 'gD', function()
+  local win = vim.api.nvim_get_current_win()
+  local arguments = vim.lsp.util.make_position_params(win, 'utf-16')
+
+  local params = {
+    command = 'typescript.goToSourceDefinition',
+    arguments = { arguments.textDocument.uri, arguments.position },
+  }
+
+  vim.lsp.buf_request(0, 'workspace/executeCommand', params, function(_, locations, context)
+    if locations then
+      local items = vim.lsp.util.locations_to_items(locations, 'utf-16')
+      vim.fn.setqflist({}, ' ', { title = 'Goto Source Definition', items = items, context = context })
+      Snacks.picker.qflist()
+    end
+  end)
+end, { desc = 'Goto Source Definition' })
+
+vim.keymap.set('n', 'gR', function()
+  local params = {
+    command = 'typescript.findAllFileReferences',
+    arguments = { vim.uri_from_bufnr(0) },
+  }
+
+  vim.lsp.buf_request(0, 'workspace/executeCommand', params, function(_, locations, context)
+    if locations then
+      local items = vim.lsp.util.locations_to_items(locations, 'utf-16')
+      vim.fn.setqflist({}, ' ', { title = 'File References', items = items, context = context })
+      Snacks.picker.qflist()
+    end
+  end)
+end, { desc = 'File References' })
+
 vim.keymap.set('n', '<leader>cM', function()
   vim.lsp.buf.code_action {
     ---@diagnostic disable-next-line: assign-type-mismatch
@@ -80,39 +108,40 @@ vim.keymap.set('n', '<leader>cD', function()
   }
 end, { desc = 'Fix all diagnostics' })
 
+-- Run JavaScript
 vim.keymap.set('n', '<leader>js', ':e ~/scratchpad.js<CR>', {
   noremap = true,
   silent = true,
-  desc = "Open JavaScript scratchpad"
+  desc = 'Open JavaScript scratchpad',
 })
 
 vim.keymap.set('n', '<leader>jr', ':w | !node %<CR>', {
   noremap = true,
   silent = true,
-  desc = "Run JavaScript scratchpad"
+  desc = 'Run JavaScript scratchpad',
 })
 
 -- Copy file path
 vim.keymap.set('n', '<leader>yP', function()
-  local path = vim.fn.expand('%:p')
+  local path = vim.fn.expand '%:p'
   vim.fn.setreg('+', path)
-  vim.notify("Copied full path: " .. path)
-end, { desc = "Yank absolute file path" })
+  vim.notify('Copied full path: ' .. path)
+end, { desc = 'Yank absolute file path' })
 
 vim.keymap.set('n', '<leader>yp', function()
-  local path = vim.fn.expand('%')
+  local path = vim.fn.expand '%'
   vim.fn.setreg('+', path)
-  vim.notify("Copied relative path: " .. path)
-end, { desc = "Yank relative file path" })
+  vim.notify('Copied relative path: ' .. path)
+end, { desc = 'Yank relative file path' })
 
 vim.keymap.set('n', '<leader>yf', function()
-  local file_name = vim.fn.expand('%:t')
+  local file_name = vim.fn.expand '%:t'
   vim.fn.setreg('+', file_name)
-  vim.notify("Copied filename: " .. file_name)
-end, { desc = "Yank filename" })
+  vim.notify('Copied filename: ' .. file_name)
+end, { desc = 'Yank filename' })
 
 vim.keymap.set('n', '<leader>yd', function()
-  local dir_path = vim.fn.expand('%:p:h')
+  local dir_path = vim.fn.expand '%:p:h'
   vim.fn.setreg('+', dir_path)
-  vim.notify("Copied directory path: " .. dir_path)
-end, { desc = "Yank directory path" })
+  vim.notify('Copied directory path: ' .. dir_path)
+end, { desc = 'Yank directory path' })
