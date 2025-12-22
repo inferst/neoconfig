@@ -35,9 +35,9 @@ return {
         no_italic = true,
       }
     end,
-    init = function()
-      vim.cmd.colorscheme 'catppuccin-mocha'
-    end,
+    -- init = function()
+    --   vim.cmd.colorscheme 'catppuccin-mocha'
+    -- end,
   },
   {
     'rose-pine/neovim',
@@ -69,8 +69,8 @@ return {
     name = 'moonfly',
     priority = 1000,
     lazy = false,
-    -- init = function()
-    --   vim.cmd.colorscheme 'moonfly'
-    -- end,
+    init = function()
+      vim.cmd.colorscheme 'moonfly'
+    end,
   },
 }
