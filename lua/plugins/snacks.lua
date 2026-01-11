@@ -13,6 +13,9 @@ return {
       toggles = {
         dim = false,
       },
+      show = {
+        statusline = true,
+      },
     },
     picker = {
       main = {

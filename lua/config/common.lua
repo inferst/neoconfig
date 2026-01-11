@@ -65,19 +65,19 @@ function _G.current_tab()
 end
 
 -- Hide "No information available" notification
-vim.lsp.handlers['textDocument/hover'] = function(_, result, ctx, config)
-  config = config or {}
-  config.focus_id = ctx.method
-  if not (result and result.contents) then
-    return
-  end
-  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
-  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-  if vim.tbl_isempty(markdown_lines) then
-    return
-  end
-  return vim.lsp.util.open_floating_preview(markdown_lines, 'markdown', config)
-end
+-- vim.lsp.handlers['textDocument/hover'] = function(_, result, ctx, config)
+--   config = config or {}
+--   config.focus_id = ctx.method
+--   if not (result and result.contents) then
+--     return
+--   end
+--   local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+--   markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+--   if vim.tbl_isempty(markdown_lines) then
+--     return
+--   end
+--   return vim.lsp.util.open_floating_preview(markdown_lines, 'markdown', config)
+-- end
 
 local orig_hover = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -85,8 +85,12 @@ vim.lsp.buf.hover = function()
   orig_hover { border = 'rounded' }
 end
 
+-- Markdown syntax for mdx files
 vim.filetype.add {
   extension = {
     mdx = 'markdown',
   },
 }
+
+-- When make session, leave only visible buffers
+vim.opt.sessionoptions:remove("buffers")

@@ -45,7 +45,7 @@ vim.api.nvim_create_user_command('Gemini', function()
       vim.api.nvim_win_set_buf(0, gemini_buf)
     end
   else
-    vim.cmd 'terminal gemini'
+    vim.cmd 'terminal gemini -s'
     gemini_buf = vim.api.nvim_get_current_buf()
   end
 
