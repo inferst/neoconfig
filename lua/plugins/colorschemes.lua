@@ -21,9 +21,9 @@ return {
         }
       end,
     },
-    -- init = function()
-    --   vim.cmd.colorscheme 'kanagawa'
-    -- end,
+    init = function()
+      -- vim.cmd.colorscheme 'kanagawa'
+    end,
   },
   {
     'catppuccin/nvim',
@@ -35,9 +35,9 @@ return {
         no_italic = true,
       }
     end,
-    -- init = function()
-    --   vim.cmd.colorscheme 'catppuccin-mocha'
-    -- end,
+    init = function()
+      vim.cmd.colorscheme 'catppuccin-mocha'
+    end,
   },
   {
     'rose-pine/neovim',
@@ -70,7 +70,14 @@ return {
     priority = 1000,
     lazy = false,
     init = function()
-      vim.cmd.colorscheme 'moonfly'
+      -- vim.cmd.colorscheme 'moonfly'
+    end,
+  },
+  {
+    'Mofiqul/vscode.nvim',
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'vscode'
     end,
   },
 }

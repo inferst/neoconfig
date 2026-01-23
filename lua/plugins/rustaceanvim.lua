@@ -8,7 +8,11 @@ return {
         default_settings = {
           ['rust-analyzer'] = {
             cargo = {
+              targetDir = 'target/analyzer',
               allFeatures = true,
+              extraEnv = {
+                MACOSX_DEPLOYMENT_TARGET = '10.13',
+              },
             },
           },
         },
