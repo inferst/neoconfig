@@ -43,10 +43,6 @@ return {
         'snippets',
         'buffer',
       },
-      -- default = { 'lsp', 'path', 'snippets', 'buffer', 'dadbod' },
-      -- providers = {
-      --   dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
-      -- },
     },
 
     completion = {

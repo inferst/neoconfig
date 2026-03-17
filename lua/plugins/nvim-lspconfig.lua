@@ -452,6 +452,7 @@ return {
 
     for server_name, config in pairs(servers) do
       vim.lsp.config(server_name, config)
+      -- vim.lsp.enable(server_name)
     end
 
     vim.lsp.config('gdscript', {

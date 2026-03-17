@@ -32,9 +32,11 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
+local persistence_group = vim.api.nvim_create_augroup('Persistence', { clear = true })
+
 -- Restore session in folder
 vim.api.nvim_create_autocmd('VimEnter', {
-  group = vim.api.nvim_create_augroup('Persistence', { clear = true }),
+  group = persistence_group,
   callback = function()
     -- NOTE: Before restoring the session, check:
     -- 1. No arg passed when opening nvim, means no `nvim --some-arg ./some-path`
@@ -45,4 +47,75 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
   -- HACK: need to enable `nested` otherwise the current buffer will not have a filetype(no syntax)
   nested = true,
+})
+
+-- Delete empty and term buffers before save session
+
+local bufs_to_delete_patterns = {
+  '^neo%-tree filesystem',
+  '^term://',
+  '^quickfix',
+  'NeogitStatus',
+}
+
+vim.api.nvim_create_autocmd('User', {
+  group = persistence_group,
+  pattern = 'PersistenceSavePre',
+  callback = function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      local name = vim.api.nvim_buf_get_name(buf)
+
+      local matches_pattern = false
+      for _, pattern in ipairs(bufs_to_delete_patterns) do
+        if name:match(pattern) then
+          matches_pattern = true
+          break
+        end
+      end
+
+      if vim.api.nvim_buf_is_loaded(buf) and (name == '' or matches_pattern) and not vim.bo[buf].modified then
+        vim.api.nvim_buf_delete(buf, { force = true })
+      end
+    end
+  end,
+})
+
+-- Add if condition surrounds
+
+local nvim_surround_augroup = vim.api.nvim_create_augroup('NvimSurroundByFileType', { clear = true })
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = nvim_surround_augroup,
+  pattern = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'vue' },
+  callback = function()
+    require('nvim-surround').buffer_setup {
+      surrounds = {
+        ['i'] = {
+          add = function()
+            return { { 'if () {' }, { '}' } }
+          end,
+        },
+      },
+    }
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = nvim_surround_augroup,
+  pattern = 'rust',
+  callback = function()
+    require('nvim-surround').buffer_setup {
+      surrounds = {
+        ['i'] = {
+          add = function()
+            local condition = vim.fn.input 'If condition: '
+            if condition == '' then
+              condition = 'true'
+            end
+            return { { 'if true {' }, { '}' } }
+          end,
+        },
+      },
+    }
+  end,
 })

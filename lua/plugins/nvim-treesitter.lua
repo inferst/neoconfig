@@ -38,7 +38,7 @@ return { -- Highlight, edit, and navigate code
         end
       end,
     },
-    indent = { enable = true, disable = { 'ruby' } },
+    -- indent = { enable = { 'html', 'typescriptreact', 'javascriptreact' }, disable = true },
     textobjects = {
       select = {
         enable = true,
