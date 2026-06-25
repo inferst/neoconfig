@@ -33,21 +33,22 @@ vim.api.nvim_create_user_command('Term', function()
   end
 end, {})
 
-local gemini_buf = nil
-
-vim.api.nvim_create_user_command('Gemini', function()
-  if gemini_buf and vim.api.nvim_buf_is_valid(gemini_buf) then
-    local win = find_window(gemini_buf)
-
-    if win ~= nil then
-      vim.api.nvim_set_current_win(win)
-    else
-      vim.api.nvim_win_set_buf(0, gemini_buf)
-    end
-  else
-    vim.cmd 'terminal gemini -s'
-    gemini_buf = vim.api.nvim_get_current_buf()
-  end
-
-  vim.cmd 'startinsert'
-end, {})
+-- -- Open Claude
+-- local claude_buf = nil
+--
+-- vim.api.nvim_create_user_command('Claude', function()
+--   if claude_buf and vim.api.nvim_buf_is_valid(claude_buf) then
+--     local win = find_window(claude_buf)
+--
+--     if win ~= nil then
+--       vim.api.nvim_set_current_win(win)
+--     else
+--       vim.api.nvim_win_set_buf(0, claude_buf)
+--     end
+--   else
+--     vim.cmd 'terminal claude'
+--     claude_buf = vim.api.nvim_get_current_buf()
+--   end
+--
+--   vim.cmd 'startinsert'
+-- end, {})

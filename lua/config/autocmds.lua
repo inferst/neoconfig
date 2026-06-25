@@ -51,29 +51,19 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
 -- Delete empty and term buffers before save session
 
-local bufs_to_delete_patterns = {
-  '^neo%-tree filesystem',
-  '^term://',
-  '^quickfix',
-  'NeogitStatus',
-}
-
 vim.api.nvim_create_autocmd('User', {
   group = persistence_group,
   pattern = 'PersistenceSavePre',
   callback = function()
+    local cwd = vim.fn.getcwd()
+    local cwd_prefix = cwd:gsub('/$', '') .. '/'
+
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       local name = vim.api.nvim_buf_get_name(buf)
+      local full_path = vim.fn.fnamemodify(name, ':p')
+      local is_outside_cwd = not vim.startswith(full_path, cwd_prefix)
 
-      local matches_pattern = false
-      for _, pattern in ipairs(bufs_to_delete_patterns) do
-        if name:match(pattern) then
-          matches_pattern = true
-          break
-        end
-      end
-
-      if vim.api.nvim_buf_is_loaded(buf) and (name == '' or matches_pattern) and not vim.bo[buf].modified then
+      if vim.api.nvim_buf_is_loaded(buf) and (name == '' or is_outside_cwd) and not vim.bo[buf].modified then
         vim.api.nvim_buf_delete(buf, { force = true })
       end
     end

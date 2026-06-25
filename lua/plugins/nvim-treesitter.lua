@@ -1,13 +1,10 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
+  lazy = false,
   build = ':TSUpdate',
-  main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-  -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-  },
-  opts = {
-    ensure_installed = {
+  branch = 'main',
+  config = function()
+    local parsers = {
       'bash',
       'c',
       'diff',
@@ -19,79 +16,40 @@ return { -- Highlight, edit, and navigate code
       'query',
       'vim',
       'vimdoc',
-      'json5',
-    },
+      'json',
+      'javascript',
+      'typescript',
+      'tsx',
+      'jsx',
+      'python',
+      'rust',
+      'css',
+      'toml',
+      'yaml',
+    }
 
-    -- Autoinstall languages that are not installed
-    auto_install = true,
-    highlight = {
-      enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      additional_vim_regex_highlighting = { 'ruby' },
-      is_supported = function()
-        if vim.fn.strwidth(vim.fn.getline '.') > 300 or vim.fn.getfsize(vim.fn.expand '%') > 1024 * 1024 then
-          return false
-        else
-          return true
+    require('nvim-treesitter').install(parsers)
+
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        local buf, filetype = args.buf, args.match
+        local language = vim.treesitter.language.get_lang(filetype)
+        if not language then
+          return
         end
+
+        -- check if parser exists and load it
+        if not vim.treesitter.language.add(language) then
+          return
+        end
+        -- enables syntax highlighting and other treesitter features
+        vim.treesitter.start(buf, language)
+
+        -- enables treesitter based indentation
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end,
-    },
-    -- indent = { enable = { 'html', 'typescriptreact', 'javascriptreact' }, disable = true },
-    textobjects = {
-      select = {
-        enable = true,
-        lookahead = true,
-        include_surrounding_whitespace = true,
-        keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
-          ['af'] = { query = '@function.outer', desc = 'around a function' },
-          ['if'] = { query = '@function.inner', desc = 'inner part of a function' },
-          ['ac'] = { query = '@class.outer', desc = 'around a class' },
-          ['ic'] = { query = '@class.inner', desc = 'inner part of a class' },
-          ['ai'] = { query = '@conditional.outer', desc = 'around an if statement' },
-          ['ii'] = { query = '@conditional.inner', desc = 'inner part of an if statement' },
-          ['al'] = { query = '@loop.outer', desc = 'around a loop' },
-          ['il'] = { query = '@loop.inner', desc = 'inner part of a loop' },
-          ['ap'] = { query = '@parameter.outer', desc = 'around parameter' },
-          ['ip'] = { query = '@parameter.inner', desc = 'inside a parameter' },
-        },
-        selection_modes = {
-          ['@parameter.outer'] = 'v', -- charwise
-          ['@parameter.inner'] = 'v', -- charwise
-          ['@function.outer'] = 'v', -- charwise
-          ['@conditional.outer'] = 'V', -- linewise
-          ['@loop.outer'] = 'V', -- linewise
-          ['@class.outer'] = '<c-v>', -- blockwise
-        },
-      },
-      move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        goto_previous_start = {
-          ['[f'] = { query = '@function.outer', desc = 'Previous function' },
-          ['[c'] = { query = '@class.outer', desc = 'Previous class' },
-          ['[p'] = { query = '@parameter.inner', desc = 'Previous parameter' },
-        },
-        goto_next_start = {
-          [']f'] = { query = '@function.outer', desc = 'Next function' },
-          [']c'] = { query = '@class.outer', desc = 'Next class' },
-          [']p'] = { query = '@parameter.inner', desc = 'Next parameter' },
-        },
-      },
-    },
-    folding = true,
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        -- init_selection = 'gnn',
-        node_incremental = 'v',
-        -- scope_incremental = 'grc',
-        node_decremental = 'V',
-      },
-    },
-  },
+    })
+  end,
   -- There are additional nvim-treesitter modules that you can use to interact
   -- with nvim-treesitter. You should go explore a few and see what interests you:
   --

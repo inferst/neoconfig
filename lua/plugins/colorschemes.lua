@@ -36,7 +36,7 @@ return {
       }
     end,
     init = function()
-      vim.cmd.colorscheme 'catppuccin-mocha'
+      -- vim.cmd.colorscheme 'catppuccin-mocha'
     end,
   },
   {
@@ -70,7 +70,7 @@ return {
     priority = 1000,
     lazy = false,
     init = function()
-      -- vim.cmd.colorscheme 'moonfly'
+      vim.cmd.colorscheme 'moonfly'
     end,
   },
   {

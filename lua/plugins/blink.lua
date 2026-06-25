@@ -54,6 +54,13 @@ return {
 
     signature = { enabled = true },
 
-    snippets = { preset = 'luasnip' },
+    snippets = {
+      preset = 'luasnip',
+      active = function(_)
+        return (not require('blink.cmp').is_visible() and not require('luasnip').locally_jumpable(1) and require('luasnip').expandable())
+          or require('luasnip').locally_jumpable(1)
+          or require('luasnip').locally_jumpable(-1)
+      end,
+    },
   },
 }

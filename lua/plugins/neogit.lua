@@ -5,7 +5,8 @@ return {
     'sindrets/diffview.nvim',
   },
   opts = {
-    disable_hint = true
+    disable_hint = true,
+    graph_style = 'kitty'
   },
   config = true,
 }
